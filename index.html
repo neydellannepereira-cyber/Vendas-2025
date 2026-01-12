@@ -327,6 +327,18 @@
                         <div class="alert-content"><h4>Ponto de Atenção</h4><p>Crescimento de desconto <span class="alert-value">6,4% maior</span> que vendas. Necessidade de olhar e ajustar esse cenário.</p></div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Crescimento: Desconto vs Venda</div>
+                            <div class="card-subtitle">Comparativo 2025 • Análise de Gap</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="growthComparisonChart"></canvas></div>
+                    <div style="text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 0.75rem; padding: 0.5rem; background: #f8fafc; border-radius: 8px;">
+                        <strong>* Observação:</strong> Dados de venda não contemplam canal digital
+                    </div>
+                </div>
             </div>
         </section>
         <!-- SEÇÃO 4: ESTRATÉGIA 2026 -->
@@ -423,6 +435,69 @@
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 } } },
                     y: { min: 20, max: 38, grid: { color: 'rgba(26, 35, 126, 0.06)' }, ticks: { font: { family: "'Space Mono', monospace", size: 10 }, callback: v => v + '%' } }
+                }
+            }
+        });
+        
+        // Novo gráfico: Crescimento Desconto vs Venda
+        const ctxGrowth = document.getElementById('growthComparisonChart').getContext('2d');
+        const crescDesconto2025 = [22.46, 21.47, 22.06, 22.34, 29.26, 20.31, 19.92, 23.12, 30.98, 24.14, 19.44];
+        const crescVenda2025 = [15.50, 10.96, 8.78, 19.64, 21.19, 18.57, 18.60, 19.14, 17.98, 18.89, 17.43];
+        new Chart(ctxGrowth, {
+            type: 'bar',
+            data: {
+                labels: months.slice(0, 11),
+                datasets: [
+                    { 
+                        label: '% Cresc. Desconto', 
+                        data: crescDesconto2025, 
+                        backgroundColor: '#c62828',
+                        borderRadius: 6,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.8
+                    },
+                    { 
+                        label: '% Cresc. Venda*', 
+                        data: crescVenda2025, 
+                        backgroundColor: '#1a237e',
+                        borderRadius: 6,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.8
+                    }
+                ]
+            },
+            options: {
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        position: 'top', 
+                        labels: { 
+                            usePointStyle: true, 
+                            padding: 15, 
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 } 
+                        } 
+                    }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false }, 
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } } 
+                    },
+                    y: { 
+                        min: 0, 
+                        max: 35, 
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' }, 
+                        ticks: { 
+                            font: { family: "'Space Mono', monospace", size: 10 }, 
+                            callback: v => v + '%' 
+                        },
+                        title: { 
+                            display: true, 
+                            text: '% Crescimento', 
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: 'bold' } 
+                        }
+                    }
                 }
             }
         });
