@@ -6,6 +6,7 @@
     <title>Resultados de Vendas 2025 | Farmácia Indiana</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
         :root {
             --indiana-blue: #1a237e;
@@ -150,14 +151,208 @@
         .vision-item h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; opacity: 0.9; }
         .vision-item p { font-size: 0.8rem; opacity: 0.8; line-height: 1.5; }
         .footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; }
+        
+        /* Botões de ação */
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-print {
+            background: white;
+            color: var(--indiana-blue);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-print:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        .btn-pdf {
+            background: var(--indiana-cyan);
+            color: white;
+        }
+        .btn-pdf:hover {
+            background: #00acc1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 188, 212, 0.4);
+        }
+        
+        /* CSS para impressão */
+        @media print {
+            .nav-menu { display: none !important; }
+            .btn-action { display: none !important; }
+            body { background: white !important; }
+            .bg-pattern { display: none !important; }
+            .header { 
+                background: var(--indiana-blue) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .card { 
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .section { 
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            .chart-container {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+        
+        /* ============================================ */
+        /* RESPONSIVIDADE MOBILE OTIMIZADA */
+        /* ============================================ */
+        
+        /* Tablets (768px - 1024px) */
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 1.5rem 2rem; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        /* Mobile Grande (426px - 768px) */
         @media (max-width: 768px) {
-            .header { padding: 1.5rem; }
-            .main-content { padding: 1.5rem; }
-            .hero-stats { grid-template-columns: 1fr; }
-            .categories-grid { grid-template-columns: repeat(2, 1fr); }
+            .header { padding: 1.5rem 1rem; }
+            .header-title h1 { font-size: 1.25rem; }
+            .header-badge { font-size: 0.75rem; padding: 0.5rem 1rem; }
+            .logo { width: 50px; height: 50px; }
+            
+            .main-content { padding: 1rem; }
+            .hero-stats { grid-template-columns: 1fr; gap: 1rem; }
             .stat-value { font-size: 2rem; }
-            .nav-menu { padding: 0.5rem 1rem; }
-            .nav-menu a { padding: 0.5rem 0.75rem; font-size: 0.7rem; }
+            .stat-label { font-size: 0.75rem; }
+            
+            .nav-menu { 
+                padding: 0.5rem 0.5rem; 
+                gap: 0.25rem;
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-menu a { 
+                padding: 0.5rem 0.75rem; 
+                font-size: 0.7rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            
+            .section-title h2 { font-size: 1rem; }
+            .card { padding: 1rem; border-radius: 12px; }
+            .card-title { font-size: 0.9rem; }
+            .card-subtitle { font-size: 0.75rem; }
+            
+            .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+            .category-card { padding: 0.75rem; }
+            .category-icon { font-size: 1.5rem; }
+            .category-value { font-size: 1rem; }
+            .category-name { font-size: 0.7rem; }
+            .category-meta { font-size: 0.65rem; }
+            
+            .regional-table { font-size: 0.7rem; }
+            .regional-table th { padding: 0.5rem 0.25rem; font-size: 0.65rem; }
+            .regional-table td { padding: 0.5rem 0.25rem; font-size: 0.7rem; }
+            
+            .chart-container { height: 280px; }
+            
+            .insight-card { padding: 1rem; }
+            .insight-title { font-size: 0.85rem; }
+            .insight-content { font-size: 0.8rem; }
+            
+            .vision-grid { grid-template-columns: 1fr; }
+            .vision-item { padding: 1rem; }
+            
+            .alert-box { flex-direction: column; text-align: center; gap: 0.75rem; }
+        }
+        
+        /* Mobile Pequeno (320px - 425px) */
+        @media (max-width: 425px) {
+            .header { padding: 1rem 0.75rem; }
+            .header-title h1 { font-size: 1.1rem; }
+            .header-badge { display: none; }
+            .logo-section { gap: 0.75rem; }
+            
+            .main-content { padding: 0.75rem; }
+            .section { margin-bottom: 2rem; }
+            
+            .hero-stats { gap: 0.75rem; }
+            .stat-card { padding: 1.25rem; border-radius: 16px; }
+            .stat-value { font-size: 1.75rem; }
+            .stat-label { font-size: 0.7rem; }
+            .stat-change { font-size: 0.75rem; padding: 0.2rem 0.5rem; }
+            
+            .nav-menu { padding: 0.5rem 0.25rem; }
+            .nav-menu a { 
+                padding: 0.4rem 0.6rem; 
+                font-size: 0.65rem;
+                border-radius: 6px;
+            }
+            
+            .section-title h2 { font-size: 0.95rem; }
+            .section-title { gap: 0.5rem; }
+            
+            .card { padding: 0.75rem; border-radius: 12px; }
+            .card-title { font-size: 0.85rem; }
+            .card-subtitle { font-size: 0.7rem; }
+            
+            .categories-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+            .category-card { padding: 0.75rem; }
+            
+            .regional-table th { padding: 0.4rem 0.2rem; font-size: 0.6rem; }
+            .regional-table td { padding: 0.4rem 0.2rem; font-size: 0.65rem; }
+            .regional-table td:first-child { font-size: 0.7rem; }
+            
+            .badge { padding: 0.2rem 0.5rem; font-size: 0.65rem; }
+            
+            .chart-container { height: 250px; }
+            
+            .nav-tabs { flex-wrap: wrap; gap: 0.25rem; }
+            .nav-tab { padding: 0.4rem 0.75rem; font-size: 0.7rem; }
+            
+            .insight-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .insight-card { padding: 0.75rem; border-radius: 12px; }
+            .insight-icon { width: 32px; height: 32px; font-size: 1rem; }
+            .insight-title { font-size: 0.8rem; }
+            .insight-content { font-size: 0.75rem; line-height: 1.4; }
+            
+            .vision-2026 { padding: 1.25rem; border-radius: 16px; }
+            .vision-2026 h3 { font-size: 1rem; margin-bottom: 1rem; }
+            .vision-item { padding: 0.75rem; border-radius: 8px; }
+            .vision-item h4 { font-size: 0.8rem; }
+            .vision-item p { font-size: 0.75rem; }
+            
+            .footer { padding: 1.5rem 0.75rem; font-size: 0.7rem; }
+        }
+        
+        /* Mobile Extra Pequeno (< 320px) */
+        @media (max-width: 320px) {
+            .header-title h1 { font-size: 1rem; }
+            .logo { width: 40px; height: 40px; }
+            .stat-value { font-size: 1.5rem; }
+            .nav-menu a { font-size: 0.6rem; padding: 0.35rem 0.5rem; }
+            .chart-container { height: 220px; }
+        }
+        
+        /* Landscape Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header { padding: 1rem; }
+            .header::before { display: none; }
+            .stat-card { padding: 1rem; }
+            .chart-container { height: 200px; }
         }
     </style>
 </head>
@@ -180,6 +375,14 @@
                 </div>
             </div>
             <div class="header-badge">👥 Equipe de Vendas</div>
+            <div style="display: flex; gap: 0.75rem;">
+                <button onclick="window.print()" class="btn-action btn-print">
+                    🖨️ Imprimir
+                </button>
+                <button onclick="exportarPDF()" class="btn-action btn-pdf">
+                    📄 Exportar PDF
+                </button>
+            </div>
         </div>
     </header>
     <main class="main-content">
@@ -273,11 +476,56 @@
                         </div>
                     </div>
                     <div class="categories-grid">
-                        <div class="category-card"><div class="category-icon">💊</div><div class="category-name">MP</div><div class="category-value">7,99%</div><div class="category-meta">Meta: 8%</div></div>
-                        <div class="category-card"><div class="category-icon">🧬</div><div class="category-name">Vitaminas</div><div class="category-value">6,09%</div><div class="category-meta">Meta: 7%</div></div>
-                        <div class="category-card"><div class="category-icon">✨</div><div class="category-name">Dermo</div><div class="category-value">4,09%</div><div class="category-meta">Meta: 5%</div></div>
-                        <div class="category-card"><div class="category-icon">🏥</div><div class="category-name">Cirúrgico</div><div class="category-value">2,67%</div><div class="category-meta">Meta: 3%</div></div>
-                        <div class="category-card"><div class="category-icon">💪</div><div class="category-name">Suplemento</div><div class="category-value">1,53%</div><div class="category-meta">Meta: 1,9%</div></div>
+                        <div class="category-card">
+                            <div class="category-icon">💊</div>
+                            <div class="category-name">MP</div>
+                            <div class="category-value">7,99%</div>
+                            <div class="category-meta">Meta: 8%</div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(26, 35, 126, 0.1);">
+                                <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 0.25rem;">Crescimento</div>
+                                <div style="font-size: 1rem; font-weight: 700; color: #2e7d32;">+16,31%</div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">🧬</div>
+                            <div class="category-name">Vitaminas</div>
+                            <div class="category-value">6,09%</div>
+                            <div class="category-meta">Meta: 7%</div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(26, 35, 126, 0.1);">
+                                <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 0.25rem;">Crescimento</div>
+                                <div style="font-size: 1rem; font-weight: 700; color: #2e7d32;">+14,82%</div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">✨</div>
+                            <div class="category-name">Dermo</div>
+                            <div class="category-value">4,09%</div>
+                            <div class="category-meta">Meta: 5%</div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(26, 35, 126, 0.1);">
+                                <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 0.25rem;">Crescimento</div>
+                                <div style="font-size: 1rem; font-weight: 700; color: #2e7d32;">+17,67%</div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">🏥</div>
+                            <div class="category-name">Cirúrgico</div>
+                            <div class="category-value">2,67%</div>
+                            <div class="category-meta">Meta: 3%</div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(26, 35, 126, 0.1);">
+                                <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 0.25rem;">Crescimento</div>
+                                <div style="font-size: 1rem; font-weight: 700; color: #2e7d32;">+18,77%</div>
+                            </div>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">💪</div>
+                            <div class="category-name">Suplemento</div>
+                            <div class="category-value">1,53%</div>
+                            <div class="category-meta">Meta: 1,9%</div>
+                            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(26, 35, 126, 0.1);">
+                                <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 0.25rem;">Crescimento</div>
+                                <div style="font-size: 1rem; font-weight: 700; color: #f9a825;">+88,63%</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -340,6 +588,117 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- ============================================ -->
+            <!-- SEÇÃO MIX DE PAGAMENTO - PREPARADA PARA USO -->
+            <!-- Descomente quando tiver os dados -->
+            <!-- ============================================ -->
+            
+            <!-- <div class="dashboard-grid" style="margin-top: 2rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Mix de Pagamento 2025</div>
+                            <div class="card-subtitle">Distribuição por Forma de Pagamento</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="paymentMixChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Evolução Mix de Pagamento</div>
+                            <div class="card-subtitle">Tendência Mensal 2025</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="paymentTrendChart"></canvas></div>
+                </div>
+            </div> -->
+            
+            <!-- FIM SEÇÃO MIX DE PAGAMENTO -->
+            
+            <!-- ============================================ -->
+            <!-- SEÇÃO TICKET MÉDIO - COM DADOS REAIS -->
+            <!-- ============================================ -->
+            
+            <div class="dashboard-grid" style="margin-top: 2rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Evolução Ticket Médio — Rede Total</div>
+                            <div class="card-subtitle">Média mensal 2025 • R$ por transação</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="ticketMedioRedeChart"></canvas></div>
+                    <div style="display: flex; justify-content: space-around; margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Ticket Médio 2025</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #1a237e; font-family: 'Space Mono', monospace;">R$ 67,27</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Menor (Jan)</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #c62828; font-family: 'Space Mono', monospace;">R$ 64,06</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Maior (Nov)</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2e7d32; font-family: 'Space Mono', monospace;">R$ 70,05</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Ranking Ticket Médio por Regional</div>
+                            <div class="card-subtitle">Média anual 2025</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="ticketMedioRegionalChart"></canvas></div>
+                </div>
+            </div>
+            
+            <!-- FIM SEÇÃO TICKET MÉDIO -->
+            
+            <!-- ============================================ -->
+            <!-- SEÇÃO CLIENTES ATENDIDOS -->
+            <!-- ============================================ -->
+            
+            <div class="dashboard-grid" style="margin-top: 2rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Evolução de Clientes Atendidos — Rede Total</div>
+                            <div class="card-subtitle">Total mensal 2025 • Clientes únicos</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="clientesRedeChart"></canvas></div>
+                    <div style="display: flex; justify-content: space-around; margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Total 2025</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #1a237e; font-family: 'Space Mono', monospace;">44,1 MM</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Média Mensal</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2e7d32; font-family: 'Space Mono', monospace;">3,68 MM</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Pico (Dez)</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #f9a825; font-family: 'Space Mono', monospace;">4,12 MM</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Top 10 Regionais por Volume de Clientes</div>
+                            <div class="card-subtitle">Total anual 2025</div>
+                        </div>
+                    </div>
+                    <div class="chart-container"><canvas id="clientesRegionalChart"></canvas></div>
+                </div>
+            </div>
+            
+            <!-- FIM SEÇÃO CLIENTES -->
+            
         </section>
         <!-- SEÇÃO 4: ESTRATÉGIA 2026 -->
         <section id="estrategia" class="section">
@@ -400,14 +759,61 @@
             data: {
                 labels: months,
                 datasets: [
-                    { label: '% Meta Atingida', data: metaAtingida, backgroundColor: barColors, borderRadius: 4, order: 2 },
-                    { label: '% Crescimento', data: crescimento, type: 'line', borderColor: '#ff6f00', backgroundColor: 'transparent', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#ff6f00', pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, yAxisID: 'y1', order: 1 },
-                    { label: 'Meta (100%)', data: [100,100,100,100,100,100,100,100,100,100,100,100], type: 'line', borderColor: '#2e7d32', borderWidth: 2, borderDash: [8, 4], fill: false, tension: 0, pointRadius: 0, order: 0 }
+                    { 
+                        label: '% Meta Atingida', 
+                        data: metaAtingida, 
+                        backgroundColor: barColors, 
+                        borderRadius: 4, 
+                        order: 2,
+                        datalabels: {
+                            anchor: 'center',
+                            align: 'center',
+                            color: 'white',
+                            font: {
+                                weight: 'bold',
+                                size: 10,
+                                family: "'Space Mono', monospace"
+                            },
+                            formatter: (value) => value.toFixed(1) + '%'
+                        }
+                    },
+                    { 
+                        label: '% Crescimento', 
+                        data: crescimento, 
+                        type: 'line', 
+                        borderColor: '#ff6f00', 
+                        backgroundColor: 'transparent', 
+                        borderWidth: 3, 
+                        pointRadius: 5, 
+                        pointBackgroundColor: '#ff6f00', 
+                        pointBorderColor: '#fff', 
+                        pointBorderWidth: 2, 
+                        tension: 0.3, 
+                        yAxisID: 'y1', 
+                        order: 1,
+                        datalabels: { display: false }
+                    },
+                    { 
+                        label: 'Meta (100%)', 
+                        data: [100,100,100,100,100,100,100,100,100,100,100,100], 
+                        type: 'line', 
+                        borderColor: '#2e7d32', 
+                        borderWidth: 2, 
+                        borderDash: [8, 4], 
+                        fill: false, 
+                        tension: 0, 
+                        pointRadius: 0, 
+                        order: 0,
+                        datalabels: { display: false }
+                    }
                 ]
             },
+            plugins: [ChartDataLabels],
             options: {
                 responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 } } } },
+                plugins: { 
+                    legend: { position: 'top', labels: { usePointStyle: true, padding: 20, font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 } } }
+                },
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } } },
                     y: { min: 85, max: 110, position: 'left', grid: { color: 'rgba(26, 35, 126, 0.06)' }, ticks: { font: { family: "'Space Mono', monospace", size: 10 }, callback: v => v + '%' }, title: { display: true, text: '% Meta Atingida', font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 } } },
@@ -501,6 +907,404 @@
                 }
             }
         });
+        
+        // ============================================
+        // CÓDIGO PARA MIX DE PAGAMENTO
+        // Descomente quando tiver os dados
+        // ============================================
+        
+        /*
+        // Gráfico 1: Mix de Pagamento (Pizza/Donut)
+        const ctxPaymentMix = document.getElementById('paymentMixChart').getContext('2d');
+        new Chart(ctxPaymentMix, {
+            type: 'doughnut',
+            data: {
+                labels: ['Cartão Crédito', 'Cartão Débito', 'PIX', 'Dinheiro', 'Outros'],
+                datasets: [{
+                    data: [45, 25, 20, 8, 2], // SUBSTITUA pelos seus dados reais
+                    backgroundColor: ['#1a237e', '#3949ab', '#5c6bc0', '#7986cb', '#9fa8da'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 15,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico 2: Evolução Mix de Pagamento (Linha)
+        const ctxPaymentTrend = document.getElementById('paymentTrendChart').getContext('2d');
+        new Chart(ctxPaymentTrend, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Cartão Crédito',
+                        data: [44, 44.5, 45, 45.2, 45.5, 45.8, 46, 46.2, 46.5, 46.8, 47, 47.2], // SUBSTITUA
+                        borderColor: '#1a237e',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'PIX',
+                        data: [18, 18.5, 19, 19.5, 20, 20.5, 21, 21.5, 22, 22.5, 23, 23.5], // SUBSTITUA
+                        borderColor: '#00bcd4',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'Cartão Débito',
+                        data: [26, 25.8, 25.5, 25.3, 25, 24.8, 24.5, 24.3, 24, 23.8, 23.5, 23.3], // SUBSTITUA
+                        borderColor: '#3949ab',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'Dinheiro',
+                        data: [10, 9.5, 9, 8.8, 8.5, 8.2, 8, 7.8, 7.5, 7.2, 7, 6.8], // SUBSTITUA
+                        borderColor: '#2e7d32',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 15,
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 10 } }
+                    },
+                    y: {
+                        min: 0,
+                        max: 50,
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' },
+                        ticks: {
+                            font: { family: "'Space Mono', monospace", size: 10 },
+                            callback: v => v + '%'
+                        },
+                        title: {
+                            display: true,
+                            text: '% Participação',
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 10, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+        */
+        
+        // FIM CÓDIGO MIX DE PAGAMENTO
+        
+        // ============================================
+        // TICKET MÉDIO - DADOS REAIS
+        // ============================================
+        
+        // Gráfico 1: Evolução Ticket Médio da Rede
+        const ctxTicketRede = document.getElementById('ticketMedioRedeChart').getContext('2d');
+        const ticketRedeData = [64.22, 64.31, 64.06, 66.56, 67.70, 66.57, 68.40, 68.24, 67.94, 69.58, 70.05, 68.50];
+        new Chart(ctxTicketRede, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Ticket Médio Rede',
+                    data: ticketRedeData,
+                    borderColor: '#1a237e',
+                    backgroundColor: 'rgba(26, 35, 126, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#1a237e',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.y.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } }
+                    },
+                    y: {
+                        min: 60,
+                        max: 75,
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' },
+                        ticks: {
+                            font: { family: "'Space Mono', monospace", size: 10 },
+                            callback: v => 'R$ ' + v.toFixed(0)
+                        },
+                        title: {
+                            display: true,
+                            text: 'Ticket Médio (R$)',
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico 2: Ranking por Regional (sem Ecom)
+        const ctxTicketRegional = document.getElementById('ticketMedioRegionalChart').getContext('2d');
+        const regionais = ['VIT', 'VCA', 'CA', 'ES', 'DIA', 'VJ', 'GV', 'ZM', 'OP', 'BA', 'VA2', 'VA', 'TO', 'PS', 'ILH'];
+        const ticketRegional = [75.12, 71.08, 71.04, 72.06, 70.41, 69.91, 68.28, 66.79, 66.39, 64.81, 64.63, 64.20, 63.75, 63.12, 61.84];
+        const coresRegional = ticketRegional.map(v => v >= 70 ? '#2e7d32' : v >= 65 ? '#f9a825' : '#c62828');
+        
+        new Chart(ctxTicketRegional, {
+            type: 'bar',
+            data: {
+                labels: regionais,
+                datasets: [{
+                    label: 'Ticket Médio',
+                    data: ticketRegional,
+                    backgroundColor: coresRegional,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'R$ ' + context.parsed.x.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        min: 55,
+                        max: 80,
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' },
+                        ticks: {
+                            font: { family: "'Space Mono', monospace", size: 10 },
+                            callback: v => 'R$ ' + v
+                        }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } }
+                    }
+                }
+            }
+        });
+        
+        // FIM CÓDIGO TICKET MÉDIO
+        
+        // ============================================
+        // CLIENTES ATENDIDOS - DADOS REAIS
+        // ============================================
+        
+        // Gráfico 1: Evolução Clientes da Rede
+        const ctxClientesRede = document.getElementById('clientesRedeChart').getContext('2d');
+        const clientesRedeData = [3391020, 3221788, 3539480, 3610149, 3795229, 3643368, 3793795, 3759011, 3693535, 3801018, 3771002, 4124441];
+        const clientesRedeDataMM = clientesRedeData.map(v => (v / 1000000).toFixed(2)); // Converter para milhões
+        
+        new Chart(ctxClientesRede, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Clientes (MM)',
+                    data: clientesRedeDataMM,
+                    backgroundColor: '#1a237e',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toFixed(2) + ' MM clientes';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } }
+                    },
+                    y: {
+                        min: 3.0,
+                        max: 4.5,
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' },
+                        ticks: {
+                            font: { family: "'Space Mono', monospace", size: 10 },
+                            callback: v => v.toFixed(1) + 'MM'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Clientes (Milhões)',
+                            font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Gráfico 2: Top 10 Regionais por Clientes (sem Ecom)
+        const ctxClientesRegional = document.getElementById('clientesRegionalChart').getContext('2d');
+        const regionaisClientes = ['PS', 'GV', 'VA', 'TO', 'BA', 'DIA', 'CA', 'VIT', 'ZM', 'VA2'];
+        const totalClientes = [4674849, 4208281, 4087279, 4076346, 3316500, 3280081, 2851178, 2735490, 2576132, 2424189];
+        const totalClientesMM = totalClientes.map(v => (v / 1000000).toFixed(2));
+        const coresClientes = totalClientesMM.map(v => parseFloat(v) >= 4.0 ? '#2e7d32' : parseFloat(v) >= 3.0 ? '#f9a825' : '#c62828');
+        
+        new Chart(ctxClientesRegional, {
+            type: 'bar',
+            data: {
+                labels: regionaisClientes,
+                datasets: [{
+                    label: 'Clientes (MM)',
+                    data: totalClientesMM,
+                    backgroundColor: coresClientes,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.x + ' MM clientes';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        min: 2.0,
+                        max: 5.0,
+                        grid: { color: 'rgba(26, 35, 126, 0.06)' },
+                        ticks: {
+                            font: { family: "'Space Mono', monospace", size: 10 },
+                            callback: v => v.toFixed(1) + 'MM'
+                        }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: '600' } }
+                    }
+                }
+            }
+        });
+        
+        // FIM CÓDIGO CLIENTES
+        
+        // ============================================
+        // FUNÇÃO EXPORTAR PDF
+        // ============================================
+        function exportarPDF() {
+            // Mostrar loading
+            const btn = event.target;
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '⏳ Gerando PDF...';
+            btn.disabled = true;
+            
+            // Configurações do PDF
+            const element = document.body;
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: 'Dashboard_Resultados_Vendas_Indiana_2025.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true,
+                    allowTaint: false,
+                    backgroundColor: '#ffffff'
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { 
+                    mode: ['avoid-all', 'css', 'legacy'],
+                    before: '.section',
+                    avoid: ['.card', '.chart-container']
+                }
+            };
+            
+            // Gerar PDF
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+                alert('✅ PDF gerado com sucesso!');
+            }).catch(err => {
+                console.error('Erro ao gerar PDF:', err);
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+                alert('❌ Erro ao gerar PDF. Tente usar a opção Imprimir.');
+            });
+        }
+        
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
